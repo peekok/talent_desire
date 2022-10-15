@@ -1,0 +1,91 @@
+{
+  "common": {
+    "appDetails": "تفاصيل التطبيق",
+    "appName": "اسم التطبيق",
+    "appVersion": "إصدار التطبيق",
+    "buildVersion": "إصدار النسخة الآخيرة",
+    "expoVersion": "إصدار إكسبو",
+    "about": "حول",
+    "posted": "تم النشر في {{تاريخ}}",
+    "recommended": "موصى به لك",
+    "viewall": "عرض الكل",
+    "more": "أكثر ",
+    "search": "بحث",
+    "night": "ليلاً",
+    "day": "اليوم ",
+    "selectDate": "أختر التاريخ ",
+    "message": "أدخل رسالتك",
+    "album": "الألبوم",
+    "or": "أو",
+    "name": "الأسم ",
+    "readMore": "إقرأ المزيد",
+    "goBack": "العودة للخلف ",
+    "send": "أرسل",
+    "signout": "تسجيل الخروج",
+    "sure": "متأكد؟",
+    "yes": "نعم",
+    "no": "لا"
+  },
+  "app": {
+    "name": "رغبة المواهب",
+    "fullname": "TalentDesire - رغبة المواهب",
+    "motto": "المستقبل في راحة يديك"
+  },
+  "darkMode": "الوضع الليلي",
+  "screens": {
+    "home": "الرئيسية",
+    "profile": "الحساب",
+    "settings": "الإعدادات",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج"
+  },
+  "navigation": {
+    "home": "رغبة المواهب",
+    "profile": "الحساب",
+    "settings": "الإعدادات",
+    "notifications": "الإشعارات",
+    "about": "حول",
+    "login": "تسجيل الدخول"
+  },
+
+  "home": {
+    "title": "رغبة المواهب"
+  },
+  "login": {
+    "title": "تسجيل الدخول",
+    "uid": "ادخل رقمك الجامعي",
+    "uidPlaceholder": "21XXXXX",
+    "requestCode": "أرسل رمز التفعيل",
+    "code": "أدخل رمز التفعيل",
+    "codePlaceholder": "XXXXXX",
+    "signin": "تسجيل الدخول"
+  },
+  "profile": {
+    "title": "الحساب",
+    "editProfile": "تعديل الحساب",
+    "aboutMe": "عني"
+  },
+  "edit": {
+    "title": "تعديل الملف الشخصي",
+    "name": "الاسم",
+    "edit": "تعديل",
+    "upload": " إرفع صورة شخصية",
+    "uploaded": "رفع",
+    "about": "حول",
+    "aboutPlaceholder": "أكتب شيئاً عن نفسك"
+  },
+  "dark": {
+    "activated": "الوضع الليلي"
+  },
+  "request": {
+    "title": "تنفيذ الطلب",
+    "price": "السعر",
+    "pricePlaceholder": "200",
+    "send": "إرسال طلب",
+    "showProfile": "إظهار الملف الشخصي"
+  },
+  "settings": {
+    "language": "اللغه",
+    "save": "حفظ"
+  }
+}

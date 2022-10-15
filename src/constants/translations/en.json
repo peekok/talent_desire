@@ -1,0 +1,91 @@
+{
+  "common": {
+    "appDetails": "App Details",
+    "appName": "App name",
+    "appVersion": "App version",
+    "buildVersion": "Build version",
+    "expoVersion": "Expo version",
+    "about": "About",
+    "posted": "Posted on {{date}}",
+    "recommended": "Recommended for you",
+    "viewall": "View All",
+    "more": "More",
+    "search": "Search",
+    "night": "night",
+    "day": "day",
+    "selectDate": "Select date",
+    "message": "Enter your message",
+    "album": "Album",
+    "or": "or",
+    "name": "Name",
+    "readMore": "Read More",
+    "goBack": "Go back",
+    "send": "Send",
+    "signout": "Sign out",
+    "sure": "Are you sure?",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "app": {
+    "name": "TalentDesire",
+    "fullname": "Talent Desire - رغبة المواهب",
+    "motto": "Future is in your hands"
+  },
+  "darkMode": "Dark Mode",
+  "screens": {
+    "home": "Home",
+    "profile": "Profile",
+    "settings": "Settings",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "navigation": {
+    "home": "TalentDesire",
+    "profile": "Profile",
+    "settings": "Settings",
+    "notifications": "Notifications",
+    "about": "About",
+    "login": "Login"
+  },
+
+  "home": {
+    "title": "TalentDesire"
+  },
+  "login": {
+    "title": "Login",
+    "uid": "Enter your University ID",
+    "uidPlaceholder": "21XXXXX",
+    "requestCode": "Request Code",
+    "code": "Enter Your Verification Code",
+    "codePlaceholder": "XXXXXX",
+    "signin": "Sign In"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "aboutMe": "About me"
+  },
+  "edit": {
+    "title": "Edit Profile",
+    "name": "Name",
+    "edit": "Edit",
+    "upload": "Upload Avatar",
+    "uploaded": "Uploaded",
+    "about": "About",
+    "aboutPlaceholder": "Write something about yourself.."
+  },
+  "dark": {
+    "activated": "Dark Mode :)"
+  },
+  "request": {
+    "title": "Request Help",
+    "price": "Price",
+    "pricePlaceholder": "200",
+    "send": "Send Request",
+    "showProfile": "Show Profile"
+  },
+  "settings": {
+    "language": "Language",
+    "save": "Save"
+  }
+}
