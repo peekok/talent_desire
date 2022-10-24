@@ -62,8 +62,11 @@
   },
   "profile": {
     "title": "Profile",
-    "editProfile": "Edit Profile",
-    "aboutMe": "About me"
+    "addSkills": "Add Skills",
+    "aboutMe": "About me",
+    "rating": "Rating",
+    "jobsDone": "Jobs",
+    "skills": "Skills"
   },
   "edit": {
     "title": "Edit Profile",

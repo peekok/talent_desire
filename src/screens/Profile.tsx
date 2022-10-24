@@ -1,45 +1,98 @@
 import React, {useState, useEffect} from 'react';
-import {ActivityIndicator, Alert, Platform} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Platform,
+  RefreshControl,
+} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/core';
 
-import {Block, Button, Image, Text, Tag} from '../components/';
+import {Block, Button, Image, Text, Tag, Modal} from '../components/';
 import {useData, useTheme, useTranslation} from '../hooks/';
+import {firebase} from '../services/firebase';
 
 const isAndroid = Platform.OS === 'android';
+
 const Profile = () => {
   const {user} = useData();
   const {t} = useTranslation();
   const navigation = useNavigation();
   const {assets, colors, sizes} = useTheme();
-  const IMAGE_SIZE = (sizes.width - (sizes.padding + sizes.sm) * 2) / 3;
-  const IMAGE_VERTICAL_SIZE =
-    (sizes.width - (sizes.padding + sizes.sm) * 2) / 2;
-  const IMAGE_MARGIN = (sizes.width - IMAGE_SIZE * 3 - sizes.padding * 2) / 2;
-  const IMAGE_VERTICAL_MARGIN =
-    (sizes.width - (IMAGE_VERTICAL_SIZE + sizes.sm) * 2) / 2;
   const [skills, setSkills] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function getData() {
-      let skillArray: any = [];
-      let s = [JSON.parse(JSON.stringify(user.skills, null, 2))];
-      s.map((skill) => {
-        for (let e in skill) {
-          skillArray.push(skill[e]);
-        }
-        setSkills(skillArray);
-      });
-      setIsLoading(false);
-    }
+  const skillList: any = [
+    'C/C++',
+    'C#',
+    'Java',
+    'Swift',
+    'PHP',
+    'Python',
+    'JavaScript',
+    'TypeScript',
+    'Ruby',
+    'React',
+    'Vue.js',
+    'Angular.js',
+    'Django',
+    'Web Development',
+    'CSS',
+    'SCSS',
+    'SQL',
+    'NoSQL',
+    'Full-Stack Dev',
+    'Mobile Development',
+    'Gaming Development',
+  ];
+  const [showSkillsModal, setSkillsModal] = useState(false);
+  function addSkill(skill: string) {
     setIsLoading(true);
+    let found = skills.find((s: any) => s.skillName === skill);
+    if (found) {
+      console.log('I found you...');
+      setIsLoading(false);
+      return;
+    }
+    firebase
+      .database()
+      .ref(`users/${firebase.auth().currentUser?.displayName}`)
+      .child('skills')
+      .push({
+        skillId: Math.floor(Math.random() * (34919 - 1)),
+        skillName: skill,
+      });
+    setIsLoading(false);
+  }
+  const getData = () => {
+    setIsLoading(true);
+    let skillArray: any = [];
+    firebase
+      .database()
+      .ref(`users/${firebase.auth().currentUser?.displayName}`)
+      .child('skills')
+      .get()
+      .then((newSkills: any) => {
+        let allSkills = [JSON.parse(JSON.stringify(newSkills, null, 2))];
+        allSkills.map((skill: any) => {
+          for (let e in skill) {
+            skillArray.push(skill[e]);
+          }
+          setSkills(skillArray);
+        });
+      });
+    setIsLoading(false);
+  };
+  useEffect(() => {
     getData();
-  }, [user.skills]);
+  }, []);
+
   return (
     <Block safe marginTop={sizes.md}>
       <Block
         scroll
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={getData} />
+        }
         paddingHorizontal={sizes.s}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: sizes.padding}}>
@@ -87,13 +140,33 @@ const Profile = () => {
                 />
               </Text>
               <Block row marginVertical={sizes.m}>
+                <Modal
+                  visible={showSkillsModal}
+                  onRequestClose={() => setSkillsModal(false)}>
+                  <FlatList
+                    keyExtractor={(index) => `${index}`}
+                    data={skillList}
+                    renderItem={({item}) => (
+                      <Button
+                        marginBottom={sizes.sm}
+                        onPress={() => {
+                          addSkill(item);
+                          setSkillsModal(false);
+                        }}>
+                        <Text p white semibold transform="uppercase">
+                          {item}
+                        </Text>
+                      </Button>
+                    )}
+                  />
+                </Modal>
                 <Button
                   white
                   outlined
                   shadow={false}
                   radius={sizes.m}
                   onPress={() => {
-                    Alert.alert('Coming soon');
+                    setSkillsModal(true);
                   }}>
                   <Block
                     justify="center"
@@ -101,7 +174,7 @@ const Profile = () => {
                     paddingHorizontal={sizes.m}
                     color="rgba(255,255,255,0.2)">
                     <Text white bold transform="uppercase">
-                      {t('profile.editProfile')}
+                      {t('profile.addSkills')}
                     </Text>
                   </Block>
                 </Button>
@@ -164,10 +237,6 @@ const Profile = () => {
                 <Text h5>{user.stats?.jobsDone || 0}</Text>
                 <Text>{t('profile.jobsDone')}</Text>
               </Block>
-              <Block align="center">
-                <Text h5>{0 / 1000}k</Text>
-                <Text>{t('profile.title')}</Text>
-              </Block>
             </Block>
           </Block>
 
@@ -185,49 +254,6 @@ const Profile = () => {
                 ))}
               </Block>
             )}
-          </Block>
-
-          {/* profile: photo album */}
-          <Block paddingHorizontal={sizes.sm} marginTop={sizes.s}>
-            <Block row align="center" justify="space-between">
-              <Text h5 semibold>
-                {t('common.album')}
-              </Text>
-              <Button>
-                <Text p primary semibold>
-                  {t('common.viewall')}
-                </Text>
-              </Button>
-            </Block>
-            <Block row justify="space-between" wrap="wrap">
-              <Image
-                resizeMode="cover"
-                source={assets?.photo1}
-                style={{
-                  width: IMAGE_VERTICAL_SIZE + IMAGE_MARGIN / 2,
-                  height: IMAGE_VERTICAL_SIZE * 2 + IMAGE_VERTICAL_MARGIN,
-                }}
-              />
-              <Block marginLeft={sizes.m}>
-                <Image
-                  resizeMode="cover"
-                  source={assets?.photo2}
-                  marginBottom={IMAGE_VERTICAL_MARGIN}
-                  style={{
-                    height: IMAGE_VERTICAL_SIZE,
-                    width: IMAGE_VERTICAL_SIZE,
-                  }}
-                />
-                <Image
-                  resizeMode="cover"
-                  source={assets?.photo3}
-                  style={{
-                    height: IMAGE_VERTICAL_SIZE,
-                    width: IMAGE_VERTICAL_SIZE,
-                  }}
-                />
-              </Block>
-            </Block>
           </Block>
         </Block>
       </Block>
