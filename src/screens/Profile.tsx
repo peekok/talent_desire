@@ -49,7 +49,6 @@ const Profile = () => {
     setIsLoading(true);
     let found = skills.find((s: any) => s.skillName === skill);
     if (found) {
-      console.log('I found you...');
       setIsLoading(false);
       return;
     }
