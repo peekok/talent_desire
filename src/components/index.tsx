@@ -8,5 +8,18 @@ import Checkbox from './Checkbox';
 import Image from './Image';
 import Card from './Card';
 import Tag from './Tag';
+import MiniTag from './MiniTag';
 
-export {Block, Button, Input, Text, Switch, Checkbox, Image, Card, Modal, Tag};
+export {
+  Block,
+  Button,
+  Input,
+  Text,
+  Switch,
+  Checkbox,
+  Image,
+  Card,
+  Modal,
+  Tag,
+  MiniTag,
+};

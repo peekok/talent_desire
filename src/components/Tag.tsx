@@ -9,9 +9,13 @@ import {firebase} from '../services/firebase';
 
 // TODO: DELETE SKILL!
 function deleteSkill(skill: any) {
-  console.log('hi ');
+  firebase
+    .database()
+    .ref(`users/${firebase.auth().currentUser?.displayName}/skills`)
+    .child(skill.skillId)
+    .remove();
 }
-const RightActions = (progress: any, dragX: any) => {
+const RightActions = (progress: any, dragX: any, skill: any) => {
   const scale = dragX.interpolate({
     inputRange: [-100, 0],
     outputRange: [0.7, 0],
@@ -20,7 +24,7 @@ const RightActions = (progress: any, dragX: any) => {
     <>
       <TouchableOpacity
         onPress={() => {
-          deleteSkill;
+          deleteSkill(skill);
         }}>
         <Block card row flex={0.7} color={'#FF0000'} width={70}>
           <Animated.Text
@@ -43,7 +47,10 @@ const Tag = (skill: any) => {
   const CARD_WIDTH = (sizes.width - sizes.padding * 2 - sizes.l) / 2;
   const TOP_VALUE = 2;
   return (
-    <Swipeable renderRightActions={RightActions}>
+    <Swipeable
+      renderRightActions={(progress, dragX) =>
+        RightActions(progress, dragX, skill)
+      }>
       <Block card flex={0} row marginBottom={sizes.sm} width={CARD_WIDTH}>
         <Image
           source={assets.warning}

@@ -35,6 +35,7 @@
   "screens": {
     "home": "Home",
     "profile": "Profile",
+    "talented": "Talented",
     "settings": "Settings",
     "login": "Login",
     "logout": "Logout"

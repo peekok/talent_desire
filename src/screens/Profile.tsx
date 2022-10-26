@@ -15,7 +15,7 @@ import {firebase} from '../services/firebase';
 const isAndroid = Platform.OS === 'android';
 
 const Profile = () => {
-  const {user} = useData();
+  const {user, isDark} = useData();
   const {t} = useTranslation();
   const navigation = useNavigation();
   const {assets, colors, sizes} = useTheme();
@@ -52,12 +52,14 @@ const Profile = () => {
       setIsLoading(false);
       return;
     }
+    let sId = `${Math.floor(Math.random() * (34919 - 1))}`;
     firebase
       .database()
       .ref(`users/${firebase.auth().currentUser?.displayName}`)
       .child('skills')
-      .push({
-        skillId: Math.floor(Math.random() * (34919 - 1)),
+      .child(sId)
+      .set({
+        skillId: sId,
         skillName: skill,
       });
     setIsLoading(false);
@@ -90,7 +92,11 @@ const Profile = () => {
       <Block
         scroll
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={getData} />
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={getData}
+            tintColor={isDark ? colors.white : colors.black}
+          />
         }
         paddingHorizontal={sizes.s}
         showsVerticalScrollIndicator={false}
@@ -139,44 +145,48 @@ const Profile = () => {
                 />
               </Text>
               <Block row marginVertical={sizes.m}>
-                <Modal
-                  visible={showSkillsModal}
-                  onRequestClose={() => setSkillsModal(false)}>
-                  <FlatList
-                    keyExtractor={(index) => `${index}`}
-                    data={skillList}
-                    renderItem={({item}) => (
-                      <Button
-                        marginBottom={sizes.sm}
-                        onPress={() => {
-                          addSkill(item);
-                          setSkillsModal(false);
-                        }}>
-                        <Text p white semibold transform="uppercase">
-                          {item}
+                {user.type === 'User' ? null : (
+                  <>
+                    <Modal
+                      visible={showSkillsModal}
+                      onRequestClose={() => setSkillsModal(false)}>
+                      <FlatList
+                        keyExtractor={(index) => `${index}`}
+                        data={skillList}
+                        renderItem={({item}) => (
+                          <Button
+                            marginBottom={sizes.sm}
+                            onPress={() => {
+                              addSkill(item);
+                              setSkillsModal(false);
+                            }}>
+                            <Text p white semibold transform="uppercase">
+                              {item}
+                            </Text>
+                          </Button>
+                        )}
+                      />
+                    </Modal>
+                    <Button
+                      white
+                      outlined
+                      shadow={false}
+                      radius={sizes.m}
+                      onPress={() => {
+                        setSkillsModal(true);
+                      }}>
+                      <Block
+                        justify="center"
+                        radius={sizes.m}
+                        paddingHorizontal={sizes.m}
+                        color="rgba(255,255,255,0.2)">
+                        <Text white bold transform="uppercase">
+                          {t('profile.addSkills')}
                         </Text>
-                      </Button>
-                    )}
-                  />
-                </Modal>
-                <Button
-                  white
-                  outlined
-                  shadow={false}
-                  radius={sizes.m}
-                  onPress={() => {
-                    setSkillsModal(true);
-                  }}>
-                  <Block
-                    justify="center"
-                    radius={sizes.m}
-                    paddingHorizontal={sizes.m}
-                    color="rgba(255,255,255,0.2)">
-                    <Text white bold transform="uppercase">
-                      {t('profile.addSkills')}
-                    </Text>
-                  </Block>
-                </Button>
+                      </Block>
+                    </Button>
+                  </>
+                )}
                 <Button
                   shadow={false}
                   radius={sizes.m}
@@ -241,18 +251,20 @@ const Profile = () => {
 
           {/* Profile: Skills */}
           <Block paddingHorizontal={sizes.sm}>
-            <Text h5 semibold marginBottom={sizes.s} marginTop={sizes.sm}>
-              {t('profile.skills')}
-            </Text>
             {isLoading ? (
               <ActivityIndicator size={'small'} />
-            ) : (
-              <Block wrap="wrap" justify="space-between" row>
-                {skills?.map((skill: any) => (
-                  <Tag {...skill} key={`skill-${skill.skillId}`} />
-                ))}
-              </Block>
-            )}
+            ) : user.type === 'Talented' ? (
+              <>
+                <Text h5 semibold marginBottom={sizes.s} marginTop={sizes.sm}>
+                  {t('profile.skills')}
+                </Text>
+                <Block wrap="wrap" justify="space-between" row>
+                  {skills?.map((skill: any) => (
+                    <Tag {...skill} key={`skill-${skill.skillId}`} />
+                  ))}
+                </Block>
+              </>
+            ) : null}
           </Block>
         </Block>
       </Block>
