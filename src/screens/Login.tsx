@@ -57,31 +57,42 @@ const Login = () => {
     },
     [setLogin, setVerify],
   );
+  const handleUserChange = useCallback(
+    async (value: any) => {
+      await setUserData((state: any) => ({...state, ...value}));
+    },
+    [setUserData],
+  );
 
   const getUserPhone = useCallback(async () => {
+    console.log('user phone is requested');
     await firebase
       .database()
       .ref(`users/${login.uid}`)
-      .get()
-      .then(async (data: any) => {
+      .once('value', async (data) => {
         if (data.exists()) {
-          setUserData(data.toJSON());
+          console.log('found');
+          await setUserData(data?.toJSON());
+          console.log('data has been set');
         } else {
           Alert.alert('User not found');
           return;
         }
       })
+      .then(async (data) => {})
       .catch((error) => {
         return console.error(error);
       });
-  }, [login.uid]);
+  }, [handleUserChange, login.uid, userData]);
   const handleVerification = useCallback(async () => {
     if (alreadyRequested) {
       return;
     }
     await getUserPhone();
     try {
+      console.log(userData?.phoneNumber);
       if (!userData?.phoneNumber) {
+        console.log('no phone number is here');
         return;
       }
       setAlreadyRequested(true);
@@ -216,6 +227,7 @@ const Login = () => {
                   marginBottom={sizes.m}
                   label={t('login.uid')}
                   keyboardType="numeric"
+                  disabled={alreadyRequested}
                   placeholder={t('login.uidPlaceholder')}
                   success={Boolean(login.uid && isValid.uid)}
                   danger={Boolean(login.uid && !isValid.uid)}
