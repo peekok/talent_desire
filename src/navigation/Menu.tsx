@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated, Alert, StyleSheet} from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
 import * as Updates from 'expo-updates';
 import {
   useIsDrawerOpen,
@@ -67,7 +68,7 @@ const DrawerContent = (
 ) => {
   const {navigation} = props;
   const {t} = useTranslation();
-  const {user} = useData();
+  const {user, isDark} = useData();
   const [active, setActive] = useState('Home');
   const {assets, colors, gradients, sizes} = useTheme();
   const labelColor = colors.text;
@@ -115,7 +116,6 @@ const DrawerContent = (
   } else {
     screens = [
       {name: t('screens.home'), to: 'Home', icon: assets.home},
-      {name: t('screens.profile'), to: 'Profile', icon: assets.profile},
       {name: t('screens.talented'), to: 'Talented', icon: assets.star},
       {name: t('screens.settings'), to: 'Settings', icon: assets.settings},
     ];
@@ -180,16 +180,66 @@ const DrawerContent = (
           );
         })}
         {user ? (
-          <Block row justify="space-between" marginTop={sizes.md}>
+          <Block row justify="space-between" marginTop={sizes.xxl * 8}>
+            <Block row>
+              <Button
+                row
+                left={5}
+                bottom={10}
+                onPress={() => {
+                  handleNavigation('Profile');
+                }}>
+                <Image
+                  radius={40}
+                  width={40}
+                  height={40}
+                  source={{uri: user.avatar}}
+                />
+                <Text bold left={10}>
+                  {user.fullName.split(' ')[0] + ' '}
+                  <Ionicons
+                    size={14}
+                    name={user.type === 'User' ? 'person' : 'star-outline'}
+                    color={isDark ? colors.white : colors.black}
+                  />
+                </Text>
+              </Button>
+            </Block>
             <Button
-              flex={1}
+              flex={0}
               gradient={gradients.primary}
               marginBottom={sizes.base}
+              left={2}
               onPress={() => handleSignOut()}>
               <Text white bold transform="uppercase">
-                {t('common.signout')}
+                <Ionicons
+                  size={18}
+                  name="log-out-outline"
+                  color={colors.white}
+                />
               </Text>
             </Button>
+          </Block>
+        ) : null}
+        {user && user.type === 'User' ? (
+          <Block row justify="space-between" marginTop={sizes.s}>
+            <Block row>
+              <Button
+                flex={1}
+                tertiary
+                row
+                bottom={10}
+                left={5}
+                onPress={() => {
+                  handleNavigation('BecomeTalented');
+                }}>
+                <Ionicons size={26} name="star-outline" color={colors.white} />
+                <Text bold white left={10}>
+                  Become Talented
+                  {/*t('screens.becomeTalented')*/}
+                </Text>
+              </Button>
+            </Block>
           </Block>
         ) : null}
       </Block>

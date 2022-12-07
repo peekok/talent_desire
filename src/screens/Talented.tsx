@@ -23,7 +23,6 @@ const Talented = () => {
             }
           });
           y = y.filter((r: any) => r.type === 'Talented');
-          console.log(y);
           setTalented(y);
         });
       setIsLoading(false);

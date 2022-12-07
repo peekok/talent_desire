@@ -7,6 +7,7 @@ import * as regex from '../constants/regex';
 import {Block, Button, Input, Image, Text} from '../components/';
 import {firebase} from '../services/firebase';
 import {FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
+import {IUser} from '../constants/types';
 const isAndroid = Platform.OS === 'android';
 
 interface ILogin {
@@ -33,7 +34,7 @@ const Login = () => {
   const [alreadyRequested, setAlreadyRequested] = useState(false);
   const [timer, setTimer] = useState(0);
   const Z_INDEX = 0;
-  const [userData, setUserData]: any = useState();
+  const [userData, setUserData]: any = useState<IUser>();
   const [verificationId, setVerificationId] = useState('');
   const recaptchaVerifier: any = React.useRef(null);
   const [isValid, setIsValid] = useState<ILoginValidation>({
@@ -57,42 +58,28 @@ const Login = () => {
     },
     [setLogin, setVerify],
   );
-  const handleUserChange = useCallback(
-    async (value: any) => {
-      await setUserData((state: any) => ({...state, ...value}));
-    },
-    [setUserData],
-  );
-
-  const getUserPhone = useCallback(async () => {
-    console.log('user phone is requested');
+  const handleVerification = useCallback(async () => {
+    if (alreadyRequested) {
+      return;
+    }
+    let user: IUser | undefined;
     await firebase
       .database()
       .ref(`users/${login.uid}`)
       .once('value', async (data) => {
         if (data.exists()) {
-          console.log('found');
-          await setUserData(data?.toJSON());
-          console.log('data has been set');
+          user = data.val();
+          setUserData(user);
         } else {
           Alert.alert('User not found');
           return;
         }
       })
-      .then(async (data) => {})
       .catch((error) => {
         return console.error(error);
       });
-  }, [handleUserChange, login.uid, userData]);
-  const handleVerification = useCallback(async () => {
-    if (alreadyRequested) {
-      return;
-    }
-    await getUserPhone();
     try {
-      console.log(userData?.phoneNumber);
-      if (!userData?.phoneNumber) {
-        console.log('no phone number is here');
+      if (!user?.phoneNumber) {
         return;
       }
       setAlreadyRequested(true);
@@ -102,7 +89,7 @@ const Login = () => {
       }, 63000);
       const phoneProvider = new firebase.auth.PhoneAuthProvider();
       const verifyId = await phoneProvider.verifyPhoneNumber(
-        userData?.phoneNumber,
+        user?.phoneNumber,
         recaptchaVerifier.current,
       );
       setVerificationId(verifyId);
@@ -110,7 +97,7 @@ const Login = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [alreadyRequested, getUserPhone, userData?.phoneNumber]);
+  }, [alreadyRequested, login.uid]);
 
   const handleSignIn = useCallback(async () => {
     if (isLoading) {

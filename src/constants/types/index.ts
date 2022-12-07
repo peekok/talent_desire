@@ -60,14 +60,6 @@ export interface INotification {
   subject?: string;
   message?: string;
   read?: boolean;
-  business?: boolean;
   createdAt?: number | Date;
-  type:
-    | 'document'
-    | 'documentation'
-    | 'payment'
-    | 'notification'
-    | 'profile'
-    | 'extras'
-    | 'office';
+  type: 'approve' | 'reject' | 'chat' | 'notification';
 }

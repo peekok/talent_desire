@@ -12,6 +12,8 @@ web-build/
 .vs
 .github
 coverage
+.idea
+ClassDiagram.png
 
 # macOS
 .DS_Store

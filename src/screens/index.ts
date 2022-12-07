@@ -4,3 +4,4 @@ export {default as Settings} from './Settings';
 export {default as Login} from './Login';
 export {default as EditProfile} from './EditProfile';
 export {default as Talented} from './Talented';
+export {default as UserProfile} from './UserProfile';
