@@ -52,7 +52,7 @@ const Login = () => {
   const {assets, colors, gradients, sizes} = useTheme();
 
   const handleChange = useCallback(
-    (value) => {
+    (value: any) => {
       setLogin((state) => ({...state, ...value}));
       setVerify((state) => ({...state, ...value}));
     },

@@ -1,21 +1,16 @@
 import React from 'react';
-import {Platform, ActivityIndicator} from 'react-native';
+import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 
-import {useData, useTheme, useTranslation} from '../hooks/';
-import {Block, Button, Input, Image, Text} from '../components/';
-import {firebase} from '../services/firebase';
-import {FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
+import {useTheme, useTranslation} from '../hooks/';
+import {Block, Button, Image, Text} from '../components/';
 const isAndroid = Platform.OS === 'android';
 
 const BecomeTalented = () => {
-  const {isDark} = useData();
   const {t} = useTranslation();
-  const app = firebase.app();
   const navigation = useNavigation();
   const Z_INDEX = 0;
-  const recaptchaVerifier: any = React.useRef(null);
-  const {assets, colors, gradients, sizes} = useTheme();
+  const {assets, colors, sizes} = useTheme();
 
   <Block safe marginTop={sizes.md}>
     <Block paddingHorizontal={sizes.s}>
@@ -71,59 +66,7 @@ const BecomeTalented = () => {
             tint={colors.blurTint}
             paddingVertical={sizes.sm}>
             <Block paddingHorizontal={sizes.sm}>
-              <Input
-                autoCapitalize="none"
-                marginBottom={sizes.m}
-                label={t('login.uid')}
-                keyboardType="numeric"
-                disabled={alreadyRequested}
-                placeholder={t('login.uidPlaceholder')}
-                success={Boolean(login.uid && isValid.uid)}
-                danger={Boolean(login.uid && !isValid.uid)}
-                onChangeText={(value) => handleChange({uid: value})}
-              />
-              <FirebaseRecaptchaVerifierModal
-                ref={recaptchaVerifier}
-                firebaseConfig={app.options}
-                attemptInvisibleVerification
-              />
-              <Button
-                onPress={handleVerification}
-                marginVertical={sizes.s}
-                outlined
-                primary
-                disabled={alreadyRequested}>
-                <Text
-                  bold
-                  color={isDark ? colors.white : colors.black}
-                  transform="uppercase">
-                  {alreadyRequested ? '' : t('login.requestCode')}
-                  {alreadyRequested && timer}
-                </Text>
-              </Button>
-              <Input
-                autoCapitalize="none"
-                marginBottom={sizes.m}
-                label={t('login.code')}
-                keyboardType="numeric"
-                disabled={!alreadyRequested}
-                placeholder={t('login.codePlaceholder')}
-                success={Boolean(verify.code && isCodeValid.code)}
-                danger={Boolean(verify.code && !isCodeValid.code)}
-                onChangeText={(value) => handleChange({code: value})}
-              />
-              <Button
-                onPress={handleSignIn}
-                marginVertical={sizes.s}
-                gradient={gradients.primary}
-                disabled={
-                  Object.values(isCodeValid).includes(false) || isLoading
-                }>
-                <Text bold white transform="uppercase">
-                  {isLoading ? '' : t('login.signin')}
-                  {isLoading && <ActivityIndicator size={'small'} />}
-                </Text>
-              </Button>
+              {/* TODO: Add the rest of the form */}
             </Block>
           </Block>
         </Block>

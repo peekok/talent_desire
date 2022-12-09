@@ -518,6 +518,16 @@ export interface IImageProps extends ImageProps, ISpacing {
    * @see https://reactnative.dev/docs/image#style
    */
   style?: StyleProp<ImageStyle>;
+  /**
+   * Renders a custom height value
+   * @see https://reactnative.dev/docs/layout-props#height
+   */
+  height?: ViewStyle['height'];
+  /**
+   * Renders a custom width value
+   * @see https://reactnative.dev/docs/layout-props#width
+   */
+  width?: ViewStyle['width'];
   /** Renders the ImageBackground content */
   children?: React.ReactNode;
 }

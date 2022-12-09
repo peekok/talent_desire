@@ -1,11 +1,14 @@
 import React, {useEffect} from 'react';
 import {Platform, StatusBar} from 'react-native';
 import {useFonts} from 'expo-font';
-import AppLoading from 'expo-app-loading';
+import * as SplashScreen from 'expo-splash-screen';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 
 import Menu from './Menu';
 import {useData, ThemeProvider, TranslationProvider} from '../hooks';
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 export default () => {
   const {isDark, theme, setTheme} = useData();
@@ -29,7 +32,7 @@ export default () => {
   });
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return null;
   }
 
   const navigationTheme = {
@@ -45,6 +48,10 @@ export default () => {
       background: String(theme.colors.background),
     },
   };
+
+  if (fontsLoaded) {
+    SplashScreen.hideAsync();
+  }
 
   return (
     <TranslationProvider>

@@ -74,7 +74,7 @@ const DrawerContent = (
   const labelColor = colors.text;
 
   const handleNavigation = useCallback(
-    (to) => {
+    (to: any) => {
       setActive(to);
       navigation.navigate(to);
     },
@@ -180,7 +180,7 @@ const DrawerContent = (
           );
         })}
         {user ? (
-          <Block row justify="space-between" marginTop={sizes.xxl * 8}>
+          <Block row justify="space-between" marginTop={sizes.xxl * 7.9}>
             <Block row>
               <Button
                 row
@@ -195,7 +195,7 @@ const DrawerContent = (
                   height={40}
                   source={{uri: user.avatar}}
                 />
-                <Text bold left={10}>
+                <Text bold h5 left={10}>
                   {user.fullName.split(' ')[0] + ' '}
                   <Ionicons
                     size={14}
@@ -233,10 +233,31 @@ const DrawerContent = (
                 onPress={() => {
                   handleNavigation('BecomeTalented');
                 }}>
-                <Ionicons size={26} name="star-outline" color={colors.white} />
+                <Ionicons size={18} name="star" color={colors.white} />
                 <Text bold white left={10}>
                   Become Talented
                   {/*t('screens.becomeTalented')*/}
+                </Text>
+              </Button>
+            </Block>
+          </Block>
+        ) : null}
+        {user && user.type === 'Talented' ? (
+          <Block row justify="space-between" marginTop={sizes.s}>
+            <Block row>
+              <Button
+                flex={1}
+                gradient={gradients.primary}
+                row
+                bottom={5}
+                left={2}
+                onPress={() => {
+                  handleNavigation('Orders');
+                }}>
+                <Ionicons size={18} name="cart" color={colors.white} />
+                <Text bold white left={10}>
+                  Orders
+                  {/*t('screens.orders')*/}
                 </Text>
               </Button>
             </Block>

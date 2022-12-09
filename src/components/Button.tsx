@@ -170,7 +170,7 @@ const Button = ({
 
   /* handle onPress event */
   const handlePress = useCallback(
-    (event) => {
+    (event: any) => {
       onPress?.(event);
 
       /* vibrate onPress */
