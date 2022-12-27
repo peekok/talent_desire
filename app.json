@@ -4,13 +4,13 @@
     "slug": "TalentDesire",
     "description": "Our Motto: We Can Help!",
     "primaryColor": "#FFFFFF",
-    "version": "1.0.0",
+    "version": "2.1.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#FFFFFF"
+      "backgroundColor": "#1F2530"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

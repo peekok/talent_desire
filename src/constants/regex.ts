@@ -21,18 +21,16 @@ export const password: RegExp =
 
 export const legalName: RegExp = /^(?!.*\d)\S[a-z\u0600-\u06FF\s]{9,44}$/;
 
-export const nationalId: RegExp = /^(1|2)([0-9]{9})$/;
-
 export const phoneNumber: RegExp = /^(05)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/;
-
-export const commercialId: RegExp = /^(1|2|3|4|5)([0-9]{9})$/;
 
 export const code: RegExp = /^([0-9]{6})$/;
 
 export const uid: RegExp = /^\d{7}$/;
 
-export const eventLocation: RegExp =
-  /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/;
-
 export const price: RegExp =
   /^((?=.*[1-9]|0)(?:\d{2,5}))((?=.*\d)(?:\.\d{3})?)*((?=.*\d)(?:,\d\d){1}?){0,1}/;
+
+export const linkedin: RegExp = /^https:\/\/[a-z]{2,3}\.linkedin\.com\/.*$/;
+
+export const github: RegExp =
+  /(https?:\/\/)?(www\.)?github\.com\/[A-Za-z0-9_]{3,18}(\?(\w+=\w+&?)*)?/;

@@ -1,5 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Platform, RefreshControl} from 'react-native';
+import {
+  ActivityIndicator,
+  Linking,
+  Platform,
+  RefreshControl,
+} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation, useRoute} from '@react-navigation/core';
 
@@ -109,25 +114,39 @@ const UserProfile = () => {
                     </Text>
                   </Block>
                 </Button>
-                <Button
-                  shadow={false}
-                  radius={sizes.m}
-                  marginHorizontal={sizes.sm}
-                  color="rgba(255,255,255,0.2)"
-                  outlined={String(colors.white)}>
-                  <Ionicons size={18} name="logo-github" color={colors.white} />
-                </Button>
-                <Button
-                  shadow={false}
-                  radius={sizes.m}
-                  color="rgba(255,255,255,0.2)"
-                  outlined={String(colors.white)}>
-                  <Ionicons
-                    size={18}
-                    name="logo-linkedin"
-                    color={colors.white}
-                  />
-                </Button>
+                {user.github ? (
+                  <Button
+                    shadow={false}
+                    radius={sizes.m}
+                    marginHorizontal={sizes.sm}
+                    color="rgba(255,255,255,0.2)"
+                    outlined={String(colors.white)}
+                    onPress={() => {
+                      Linking.openURL(user.github);
+                    }}>
+                    <Ionicons
+                      size={18}
+                      name="logo-github"
+                      color={colors.white}
+                    />
+                  </Button>
+                ) : null}
+                {user.linkedin ? (
+                  <Button
+                    shadow={false}
+                    radius={sizes.m}
+                    color="rgba(255,255,255,0.2)"
+                    outlined={String(colors.white)}
+                    onPress={() => {
+                      Linking.openURL(user.linkedin);
+                    }}>
+                    <Ionicons
+                      size={18}
+                      name="logo-linkedin"
+                      color={colors.white}
+                    />
+                  </Button>
+                ) : null}
               </Block>
             </Block>
           </Image>

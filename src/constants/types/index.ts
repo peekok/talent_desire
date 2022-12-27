@@ -17,6 +17,8 @@ export interface IUser {
     skillId: number;
     skillName: string;
   };
+  github: string;
+  linkedin: string;
 }
 
 export interface ICard {

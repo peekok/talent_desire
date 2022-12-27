@@ -1,18 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  Linking,
   Platform,
   RefreshControl,
 } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/core';
-
-import {Block, Button, Image, Text, Tag, Modal} from '../components/';
+import * as regex from '../constants/regex';
+import {Block, Button, Image, Text, Tag, Modal, Input} from '../components/';
 import {useData, useTheme, useTranslation} from '../hooks/';
 import {firebase} from '../services/firebase';
 
 const isAndroid = Platform.OS === 'android';
+interface IProfile {
+  url: string;
+}
+interface IProfileValidation {
+  url: boolean;
+}
 
 const Profile = () => {
   const {user, isDark} = useData();
@@ -45,6 +52,26 @@ const Profile = () => {
     'Gaming Development',
   ];
   const [showSkillsModal, setSkillsModal] = useState(false);
+  const [showSocialModal, setSocialModal] = useState(false);
+  const [isValid, setIsValid] = useState<IProfileValidation>({
+    url: false,
+  });
+  const [profile, setProfile] = useState<IProfile>({
+    url: '',
+  });
+
+  const handleChange = useCallback(
+    (value: any) => {
+      setProfile((state) => ({...state, ...value}));
+    },
+    [setProfile],
+  );
+  useEffect(() => {
+    setIsValid((state) => ({
+      ...state,
+      url: regex.linkedin.test(profile.url) || regex.github.test(profile.url),
+    }));
+  }, [profile.url]);
   function addSkill(skill: string) {
     setIsLoading(true);
     let found = skills.find((s: any) => s.skillName === skill);
@@ -63,6 +90,23 @@ const Profile = () => {
         skillName: skill,
       });
     setIsLoading(false);
+  }
+  function addSocial() {
+    if (regex.github.test(profile.url)) {
+      firebase
+        .database()
+        .ref(`users/${firebase.auth().currentUser?.displayName}`)
+        .child('github')
+        .set(profile.url);
+    }
+    if (regex.linkedin.test(profile.url)) {
+      firebase
+        .database()
+        .ref(`users/${firebase.auth().currentUser?.displayName}`)
+        .child('linkedin')
+        .set(profile.url);
+    }
+    setSocialModal(false);
   }
   const getData = () => {
     setIsLoading(true);
@@ -187,19 +231,74 @@ const Profile = () => {
                     </Button>
                   </>
                 )}
+                <Modal
+                  visible={showSocialModal}
+                  onRequestClose={() => setSocialModal(false)}>
+                  <Block
+                    blur
+                    flex={0}
+                    intensity={65}
+                    radius={sizes.sm}
+                    overflow="hidden"
+                    justify="space-evenly"
+                    tint={colors.blurTint}
+                    paddingVertical={sizes.s}>
+                    <Block flex={0} justify="space-between">
+                      <Input
+                        autoCapitalize="none"
+                        marginBottom={sizes.xxl}
+                        label={'Add your social'} //t('profile.social')
+                        keyboardType="url"
+                        placeholder={'https://github.com/peekok'} //t('profile.socialPlaceholder')
+                        success={Boolean(profile.url && isValid.url)}
+                        danger={Boolean(profile.url && !isValid.url)}
+                        onChangeText={(value) => handleChange({url: value})}
+                      />
+                      <Button
+                        primary
+                        outlined
+                        disabled={!isValid.url}
+                        onPress={() => {
+                          addSocial();
+                        }}>
+                        <Text>Send{/*t('profile.send')*/}</Text>
+                      </Button>
+                    </Block>
+                    <Text>
+                      Pro Tip: Long Press on GitHub/LinkedIn makes you able to
+                      edit your social account {/*t('profile.proTip')*/}
+                    </Text>
+                  </Block>
+                </Modal>
                 <Button
                   shadow={false}
                   radius={sizes.m}
                   marginHorizontal={sizes.sm}
                   color="rgba(255,255,255,0.2)"
-                  outlined={String(colors.white)}>
+                  outlined={String(colors.white)}
+                  onPress={() => {
+                    user.github
+                      ? Linking.openURL(user.github)
+                      : setSocialModal(true);
+                  }}
+                  onLongPress={() => {
+                    setSocialModal(true);
+                  }}>
                   <Ionicons size={18} name="logo-github" color={colors.white} />
                 </Button>
                 <Button
                   shadow={false}
                   radius={sizes.m}
                   color="rgba(255,255,255,0.2)"
-                  outlined={String(colors.white)}>
+                  outlined={String(colors.white)}
+                  onPress={() => {
+                    user.linkedin
+                      ? Linking.openURL(user.linkedin)
+                      : setSocialModal(true);
+                  }}
+                  onLongPress={() => {
+                    setSocialModal(true);
+                  }}>
                   <Ionicons
                     size={18}
                     name="logo-linkedin"

@@ -6,6 +6,7 @@ import {IUseData, ITheme, IUser} from '../constants/types';
 import {light, dark} from '../constants';
 import {firebase} from '../services/firebase';
 import {getAuth} from 'firebase/auth';
+import appData from '../../app.json';
 
 export const DataContext = React.createContext({});
 export const DataProvider = ({children}: {children: React.ReactNode}) => {
@@ -28,6 +29,9 @@ export const DataProvider = ({children}: {children: React.ReactNode}) => {
     (payload: boolean) => {
       // set isDark / compare if has updated
       setIsDark(payload);
+      payload
+        ? (appData.expo.splash.backgroundColor = '#000')
+        : (appData.expo.splash.backgroundColor = '#fff');
       // save preference to storage
       Storage.setItem('isDark', JSON.stringify(payload));
     },
