@@ -1,3 +1,4 @@
+import Alert from './Alert';
 import Block from './Block';
 import Button from './Button';
 import Input from './Input';
@@ -11,6 +12,7 @@ import Tag from './Tag';
 import MiniTag from './MiniTag';
 
 export {
+  Alert,
   Block,
   Button,
   Input,

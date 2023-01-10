@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Alert, Platform, ActivityIndicator} from 'react-native';
+import {Platform, ActivityIndicator} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 
 import {useData, useTheme, useTranslation} from '../hooks/';
 import * as regex from '../constants/regex';
-import {Block, Button, Input, Image, Text} from '../components/';
+import {Alert, Block, Button, Input, Image, Text} from '../components/';
 import {firebase} from '../services/firebase';
 import {FirebaseRecaptchaVerifierModal} from 'expo-firebase-recaptcha';
 import {IUser} from '../constants/types';
@@ -33,6 +33,11 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [alreadyRequested, setAlreadyRequested] = useState(false);
   const [timer, setTimer] = useState(0);
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [alert, setAlert] = useState({
+    type: '',
+    message: '',
+  });
   const Z_INDEX = 0;
   const [userData, setUserData]: any = useState<IUser>();
   const [verificationId, setVerificationId] = useState('');
@@ -51,6 +56,17 @@ const Login = () => {
   });
   const {assets, colors, gradients, sizes} = useTheme();
 
+  // Show the alert and close it after 5 seconds
+  const showAlert = useCallback(
+    (type: string, message: string) => {
+      setAlert({type, message});
+      setIsAlertVisible(true);
+      setTimeout(() => {
+        setIsAlertVisible(false);
+      }, 5500);
+    },
+    [setAlert, setIsAlertVisible],
+  );
   const handleChange = useCallback(
     (value: any) => {
       setLogin((state) => ({...state, ...value}));
@@ -71,7 +87,7 @@ const Login = () => {
           user = data.val();
           setUserData(user);
         } else {
-          Alert.alert('User not found');
+          showAlert('danger', 'User does not exist.');
           return;
         }
       })
@@ -93,11 +109,11 @@ const Login = () => {
         recaptchaVerifier.current,
       );
       setVerificationId(verifyId);
-      Alert.alert('Verification Code has been sent to your phone.');
+      showAlert('success', 'Verification Code has been sent to your phone.');
     } catch (error) {
       console.error(error);
     }
-  }, [alreadyRequested, login.uid]);
+  }, [alreadyRequested, login.uid, showAlert]);
 
   const handleSignIn = useCallback(async () => {
     if (isLoading) {
@@ -116,10 +132,10 @@ const Login = () => {
           displayName: login.uid,
         });
         handleUser(userData);
-        Alert.alert("You're Logged in.");
+        showAlert('success', "You're Logged in.");
         navigation.navigate('Home');
       } catch (error: any) {
-        Alert.alert(`There was an error: ${error.message}`);
+        showAlert('danger', `There was an error: ${error.message}`);
         setIsLoading(!isLoading);
       }
     }
@@ -129,6 +145,7 @@ const Login = () => {
     isValid,
     login.uid,
     navigation,
+    showAlert,
     userData,
     verificationId,
     verify.code,
@@ -182,7 +199,6 @@ const Login = () => {
                 {t('common.goBack')}
               </Text>
             </Button>
-
             <Text h4 center white marginBottom={sizes.md}>
               {t('login.title')}
             </Text>
@@ -267,6 +283,13 @@ const Login = () => {
           </Block>
         </Block>
       </Block>
+      {isAlertVisible && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          isVisible={isAlertVisible}
+        />
+      )}
     </Block>
   );
 };

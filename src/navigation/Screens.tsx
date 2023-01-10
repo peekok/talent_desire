@@ -8,6 +8,7 @@ import {
   Settings,
   Talented,
   UserProfile,
+  BecomeTalented,
 } from '../screens';
 import {useScreenOptions, useTranslation} from '../hooks';
 const Stack = createStackNavigator();
@@ -48,6 +49,11 @@ export default () => {
       <Stack.Screen
         name="UserProfile"
         component={UserProfile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="BecomeTalented"
+        component={BecomeTalented}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

@@ -235,7 +235,6 @@ const Profile = () => {
                   visible={showSocialModal}
                   onRequestClose={() => setSocialModal(false)}>
                   <Block
-                    blur
                     flex={0}
                     intensity={65}
                     radius={sizes.sm}
@@ -243,11 +242,15 @@ const Profile = () => {
                     justify="space-evenly"
                     tint={colors.blurTint}
                     paddingVertical={sizes.s}>
-                    <Block flex={0} justify="space-between">
+                    <Block flex={0}>
+                      <Text p bold white>
+                        Add Social Account GitHub/LinkedIn Only{' '}
+                        {/*t('profile.addSocial')*/}
+                      </Text>
                       <Input
+                        white
                         autoCapitalize="none"
-                        marginBottom={sizes.xxl}
-                        label={'Add your social'} //t('profile.social')
+                        marginBottom={sizes.sm}
                         keyboardType="url"
                         placeholder={'https://github.com/peekok'} //t('profile.socialPlaceholder')
                         success={Boolean(profile.url && isValid.url)}
@@ -261,12 +264,13 @@ const Profile = () => {
                         onPress={() => {
                           addSocial();
                         }}>
-                        <Text>Send{/*t('profile.send')*/}</Text>
+                        <Text white>Send{/*t('profile.send')*/}</Text>
                       </Button>
                     </Block>
-                    <Text>
-                      Pro Tip: Long Press on GitHub/LinkedIn makes you able to
-                      edit your social account {/*t('profile.proTip')*/}
+                    <Text white>
+                      ⚡️ Pro Tip: Long Press on GitHub/LinkedIn makes you able to
+                      edit your social account later on{' '}
+                      {/*t('profile.proTip')*/}
                     </Text>
                   </Block>
                 </Modal>

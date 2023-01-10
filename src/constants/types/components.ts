@@ -654,6 +654,30 @@ export interface IModalProps extends ModalProps {
   style?: ViewStyle;
 }
 
+export interface IAlertProps {
+  /**
+   * id for testID & accesibilityLabel
+   */
+  id?: string;
+  /**
+   * type of the Alert
+   */
+  type?: 'success' | 'danger' | string;
+  /**
+   * Renders the Modal content
+   */
+  message?: string;
+  /**
+   * Determines if the Alert is visible
+   */
+  isVisible?: boolean;
+  /**
+   * Renders the Text Modal with custom style, overwrite existing/predefined styles
+   * @see https://reactnative.dev/docs/view#style
+   */
+  style?: ViewStyle;
+}
+
 /**
  * ## Switch
  * Default usage:

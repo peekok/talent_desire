@@ -91,5 +91,51 @@
   "settings": {
     "language": "Language",
     "save": "Save"
+  },
+  "becomeTalented": {
+    "title": "Become Talented",
+    "terms": {
+      "introduction": "Introduction",
+      "intellectualPropertyRights": "Intellectual Property Rights",
+      "licenseToUseApplication": "License to use Application",
+      "acceptableUse": "Acceptable use",
+      "userContent": "User Content",
+      "indemnity": "Indemnity",
+      "breachesOfTheseTermsAndConditions": "Breaches of these terms and conditions",
+      "variation": "Variation",
+      "ourService": "Our Service",
+      "eligibility": "Eligibility",
+      "clientObligations": "Client Obligations",
+      "freelancerObligations": "Freelancer Obligations",
+      "disputeResolution": "Dispute Resolution",
+      "termination": "Termination",
+      "liability": "Liability",
+      "governingLaw": "Governing Law",
+      "entireAgreement": "Entire Agreement",
+      "ourDetails": "Our Details",
+      "introductionText": "TalentDesire Standard Terms and Conditions written on this Application shall manage your use of our Application, TalentDesire is accessible at App Store & Play Store.",
+      "intellectualPropertyRightsText": "Unless otherwise stated, we or our licensors own the intellectual property rights in the Application and material on the Application. Subject to the license below, all these intellectual property rights are reserved.",
+      "licenseToUseApplicationText": "You may view, download for caching purposes only, and print pages from the Application for your own personal use, subject to the restrictions set out below and elsewhere in these terms and conditions.",
+      "acceptableUseText": "You must not use our Application in any way that causes, or may cause, damage to the Application or impairment of the availability or accessibility of the Application; or in any way which is unlawful, illegal, fraudulent or harmful, or in connection with any unlawful, illegal, fraudulent or harmful purpose or activity.",
+      "userContentText": "In TalentDesire Standard Terms and Conditions, “Your Content” shall mean any audio, video, text, images or other material you choose to display on this Application. By displaying Your Content, you grant the Application a non-exclusive, worldwide irrevocable, sub licensable license to use, reproduce, adapt, publish, translate and distribute it in any and all media.",
+      "indemnityText": "You agree to indemnify us, and our directors, officers, employees and agents, from and against any claims, actions or suits or proceedings, as well as any losses, liabilities, damages, costs or expenses (including reasonable legal fees) arising out of or in any way connected with your use of this Application, your violation of these terms and conditions or your violation of any rights of a third party.",
+      "breachesOfTheseTermsAndConditionsText": "Without prejudice to our other rights under these terms and conditions, if you breach these terms and conditions in any way, or we reasonably suspect that you have breached these terms and conditions in any way, we may: send you one or more formal warnings; temporarily suspend your access to our Application; permanently prohibit you from accessing our Application; block computers using your IP address from accessing our Application; contact any or all of your internet service providers and request that they block your access to our Application; commence legal action against you, whether for breach of contract or otherwise; and/or take such other action as we reasonably deem appropriate.",
+      "variationText": "We reserve the right to revise and amend these terms and conditions from time-to-time to reflect changes in market conditions affecting our business, changes in technology, changes in payment methods, changes in relevant laws and regulatory requirements and changes in our system's capabilities or for any other reason at our sole discretion.",
+      "ourServiceText": "We provide a platform for freelancers to connect with clients looking for their services. Our platform allows freelancers to create a profile, showcase their portfolio and skills, and bid on or apply for project opportunities.",
+      "eligibilityText": "In order to use our platform and services, you must be at least 18 years of age and have the legal capacity to enter into a binding contract. You are also required to provide accurate and complete information when creating an account and during the use of our platform. Any false or misleading information may result in termination of your account.",
+      "clientObligationsText": "Clients are responsible for providing clear and detailed project descriptions and requirements, and for selecting the freelancer that they believe best suits the project. Clients are also responsible for paying the agreed upon fees to the freelancer for their services, and for any taxes or other fees associated with the project.",
+      "freelancerObligationsText": "Freelancers are responsible for providing accurate information in their profile and portfolio, and for clearly communicating their qualifications and experience. Freelancers are also responsible for delivering the services as agreed upon with the client and for any taxes or other fees associated with the project.",
+      "disputeResolutionText": "In the event of a dispute between a client and a freelancer, we will work to mediate the dispute and come to a resolution that is fair for all parties. If a resolution cannot be reached, the parties may seek resolution through other means, such as arbitration or legal action.",
+      "terminationText": "Either party may terminate the agreement at any time if the other party breaches any of the terms of this agreement.",
+      "liabilityText": "To the extent permitted by law, we will not be liable to you in respect of any special, indirect or consequential loss or damage.",
+      "governingLawText": "This agreement will be governed by and construed in accordance with the laws of the country in which the Application is hosted and you submit to the non-exclusive jurisdiction of the courts of that country.",
+      "entireAgreementText": "These terms and conditions constitute the entire agreement between you and us in relation to your use of this Application, and supersede all previous agreements in respect of your use of this Application.",
+      "ourDetailsText": {
+        "companyName": "TalentDesire",
+        "registeredAddress": "University Of Jeddah, Jeddah, Saudi Arabia"
+      },
+      "submit": "Agree To Terms & Conditions",
+      "dateOfTerms": "Effective since 2023-01-10"
+    }
   }
 }
