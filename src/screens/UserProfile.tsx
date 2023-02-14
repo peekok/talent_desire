@@ -101,7 +101,7 @@ const UserProfile = () => {
                   shadow={false}
                   radius={sizes.m}
                   onPress={() => {
-                    /* TODO: Navigate to Request Page */
+                    navigation.navigate('Hire', {requester: user});
                   }}>
                   <Block
                     justify="center"

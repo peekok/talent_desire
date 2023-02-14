@@ -38,7 +38,8 @@
     "talented": "Talented",
     "settings": "Settings",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "order": "Order"
   },
   "navigation": {
     "home": "TalentDesire",
@@ -67,7 +68,8 @@
     "aboutMe": "About me",
     "rating": "Rating",
     "jobsDone": "Jobs",
-    "skills": "Skills"
+    "skills": "Skills",
+    "hire": "Hire"
   },
   "edit": {
     "title": "Edit Profile",
@@ -81,12 +83,14 @@
   "dark": {
     "activated": "Dark Mode :)"
   },
-  "request": {
-    "title": "Request Help",
-    "price": "Price",
-    "pricePlaceholder": "200",
+  "hire": {
+    "title": "Hire",
+    "date": "Date",
+    "datePlaceholder": "Select Date",
     "send": "Send Request",
-    "showProfile": "Show Profile"
+    "showProfile": "Show Profile",
+    "msg": "Message",
+    "msgPlaceholder": "Enter your message.."
   },
   "settings": {
     "language": "Language",

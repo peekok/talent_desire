@@ -108,6 +108,7 @@ const Profile = () => {
     }
     setSocialModal(false);
   }
+
   const getData = () => {
     setIsLoading(true);
     let skillArray: any = [];
@@ -180,15 +181,17 @@ const Profile = () => {
               <Text h5 center white>
                 {user.fullName}
               </Text>
-              <Text p center white>
-                {user.type + ' '}
-                <Ionicons
-                  size={14}
-                  name={user.type === 'User' ? 'person' : 'star-outline'}
-                  color={colors.white}
-                />
-              </Text>
-              <Block row marginVertical={sizes.m}>
+              {user.type === 'User' ? null : (
+                <Text p center white>
+                  {user.type + ' '}
+                  <Ionicons
+                    size={14}
+                    name={user.type === 'Talented' ? 'star-outline' : 'person'}
+                    color={colors.white}
+                  />
+                </Text>
+              )}
+              <Block row marginVertical={sizes.sm}>
                 {user.type === 'User' ? null : (
                   <>
                     <Modal
@@ -268,8 +271,8 @@ const Profile = () => {
                       </Button>
                     </Block>
                     <Text white>
-                      ⚡️ Pro Tip: Long Press on GitHub/LinkedIn makes you able to
-                      edit your social account later on{' '}
+                      ⚡️ Pro Tip: Long Press on GitHub/LinkedIn makes you able
+                      to edit your social account later on{' '}
                       {/*t('profile.proTip')*/}
                     </Text>
                   </Block>

@@ -117,6 +117,7 @@ const DrawerContent = (
     screens = [
       {name: t('screens.home'), to: 'Home', icon: assets.home},
       {name: t('screens.talented'), to: 'Talented', icon: assets.star},
+      {name: t('screens.order'), to: 'Orders', icon: assets.add},
       {name: t('screens.settings'), to: 'Settings', icon: assets.settings},
     ];
   }
@@ -128,59 +129,9 @@ const DrawerContent = (
       removeClippedSubviews
       renderToHardwareTextureAndroid
       contentContainerStyle={{paddingBottom: sizes.padding}}>
-      <Block paddingHorizontal={sizes.padding}>
-        <Block flex={0} row align="center" marginBottom={sizes.l}>
-          <Image
-            radius={0}
-            width={33}
-            height={33}
-            source={assets.icon}
-            marginRight={sizes.sm}
-          />
-          <Block>
-            <Text size={12} semibold>
-              {t('app.name')}
-            </Text>
-            <Text size={12} semibold>
-              {t('app.motto')}
-            </Text>
-          </Block>
-        </Block>
-
-        {screens?.map((screen, index) => {
-          const isActive = active === screen.to;
-          return (
-            <Button
-              row
-              justify="flex-start"
-              marginBottom={sizes.s}
-              key={`menu-screen-${screen.name}-${index}`}
-              onPress={() => handleNavigation(screen.to)}>
-              <Block
-                flex={0}
-                radius={6}
-                align="center"
-                justify="center"
-                width={sizes.md}
-                height={sizes.md}
-                marginRight={sizes.s}
-                gradient={gradients[isActive ? 'primary' : 'white']}>
-                <Image
-                  radius={0}
-                  width={14}
-                  height={14}
-                  source={screen.icon}
-                  color={colors[isActive ? 'white' : 'black']}
-                />
-              </Block>
-              <Text p semibold={isActive} color={labelColor}>
-                {screen.name}
-              </Text>
-            </Button>
-          );
-        })}
+      <Block paddingHorizontal={sizes.padding} marginTop={sizes.s}>
         {user ? (
-          <Block row justify="space-between" marginTop={sizes.xxl * 7.9}>
+          <Block row justify="space-between" marginTop={sizes.sm}>
             <Block row>
               <Button
                 row
@@ -222,7 +173,11 @@ const DrawerContent = (
           </Block>
         ) : null}
         {user && user.type === 'User' ? (
-          <Block row justify="space-between" marginTop={sizes.s}>
+          <Block
+            row
+            justify="space-between"
+            marginTop={sizes.s}
+            marginBottom={sizes.s}>
             <Block row>
               <Button
                 flex={1}
@@ -236,33 +191,70 @@ const DrawerContent = (
                 <Ionicons size={18} name="star" color={colors.white} />
                 <Text bold white left={10}>
                   Become Talented
-                  {/*t('screens.becomeTalented')*/}
+                  {/*TODO: t('screens.becomeTalented')*/}
                 </Text>
               </Button>
             </Block>
           </Block>
         ) : null}
-        {user && user.type === 'Talented' ? (
-          <Block row justify="space-between" marginTop={sizes.s}>
-            <Block row>
-              <Button
-                flex={1}
-                gradient={gradients.primary}
-                row
-                bottom={5}
-                left={2}
-                onPress={() => {
-                  handleNavigation('Orders');
-                }}>
-                <Ionicons size={18} name="cart" color={colors.white} />
-                <Text bold white left={10}>
-                  Orders
-                  {/*t('screens.orders')*/}
-                </Text>
-              </Button>
-            </Block>
+        {screens?.map((screen, index) => {
+          const isActive = active === screen.to;
+          return (
+            <Button
+              row
+              justify="flex-start"
+              marginBottom={sizes.s}
+              marginTop={sizes.xs}
+              key={`menu-screen-${screen.name}-${index}`}
+              onPress={() => handleNavigation(screen.to)}>
+              <Block
+                flex={0}
+                radius={6}
+                align="center"
+                justify="center"
+                width={sizes.md}
+                height={sizes.md}
+                marginRight={sizes.s}
+                gradient={gradients[isActive ? 'primary' : 'white']}>
+                <Image
+                  radius={0}
+                  width={14}
+                  height={14}
+                  source={screen.icon}
+                  color={colors[isActive ? 'white' : 'black']}
+                />
+              </Block>
+              <Text p semibold={isActive} color={labelColor}>
+                {screen.name}
+              </Text>
+            </Button>
+          );
+        })}
+        <Block
+          flex={0}
+          row
+          align="center"
+          marginBottom={sizes.l}
+          marginTop={
+            // TODO: Edit this
+            user && user.type === 'user' ? sizes.xxl * 7.0 : sizes.xxl * 8
+          }>
+          <Image
+            radius={0}
+            width={33}
+            height={33}
+            source={assets.icon}
+            marginRight={sizes.sm}
+          />
+          <Block>
+            <Text size={12} semibold>
+              {t('app.name')}
+            </Text>
+            <Text size={12} semibold>
+              {t('app.motto')}
+            </Text>
           </Block>
-        ) : null}
+        </Block>
       </Block>
     </DrawerContentScrollView>
   );
