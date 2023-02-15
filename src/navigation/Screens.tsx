@@ -11,6 +11,7 @@ import {
   BecomeTalented,
   Orders,
   Hire,
+  Chat,
 } from '../screens';
 import {useScreenOptions, useTranslation} from '../hooks';
 const Stack = createStackNavigator();
@@ -40,7 +41,7 @@ export default () => {
       <Stack.Screen
         name="Talented"
         component={Talented}
-        options={screenOptions.back}
+        options={screenOptions.profile}
       />
 
       <Stack.Screen
@@ -61,12 +62,17 @@ export default () => {
       <Stack.Screen
         name="Orders"
         component={Orders}
-        options={screenOptions.back}
+        options={screenOptions.profile}
       />
       <Stack.Screen
         name="Hire"
         component={Hire}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
+        options={screenOptions.profile}
       />
     </Stack.Navigator>
   );

@@ -7,3 +7,4 @@ export {default as UserProfile} from './UserProfile';
 export {default as BecomeTalented} from './BecomeTalented';
 export {default as Orders} from './Orders';
 export {default as Hire} from './Hire';
+export {default as Chat} from './ChatPage';

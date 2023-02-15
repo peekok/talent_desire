@@ -1,51 +1,55 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {useData, useTheme, useTranslation} from '../hooks/';
+import {useRoute} from '@react-navigation/native';
 import {Ionicons} from '@expo/vector-icons';
-import {Block, Button, Input, Image, Text} from '../components/';
-import {IUser} from '../constants/types';
+import {Alert, Block, Button, Input, Image, Text} from '../components/';
+import {firebase} from '../services/firebase';
 const isAndroid = Platform.OS === 'android';
 
 interface IHire {
-  date: Date;
+  date: string;
   message: string;
-  requester: IUser;
   accepted: boolean;
 }
+
 const Hire = () => {
   const {t} = useTranslation();
-  const {isDark} = useData();
+  const {isDark, user} = useData();
+  const params: any = useRoute().params;
+  const requestedTalented = params?.requested;
   const navigation = useNavigation();
   const {assets, colors, gradients, sizes} = useTheme();
-  const [date, setDate] = useState(Date);
-  // const [registration, setRegistration] = useState<IHire>({
-  //   date: date,
-  //   message: '',
-  //   requester: {
-  //     avatar: '',
-  //     fullName: '',
-  //     phoneNumber: '',
-  //     type: '',
-  //     stats: {
-  //       jobsDone: 0,
-  //       rating: 0,
-  //     },
-  //     skills: {
-  //       skillId: 0,
-  //       skillName: '',
-  //     },
-  //     github: '',
-  //     linkedin: '',
-  //   },
-  // });
-  // const handleChange = useCallback(
-  //   (value: any) => {
-  //     setRegistration((state) => ({...state, ...value}));
-  //   },
-  //   [setRegistration],
-  // );
+  const [date, setDate] = useState('');
+  const [requested, setRequested] = useState(false);
+  const [order, setOrder] = useState<IHire>({
+    date: '',
+    message: '',
+    accepted: false,
+  });
+  const handleChange = useCallback(
+    (value: any) => {
+      setOrder((state) => ({...state, ...value}));
+    },
+    [setOrder],
+  );
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [alert, setAlert] = useState({
+    type: '',
+    message: '',
+  });
+  const showAlert = useCallback(
+    (type: string, message: string) => {
+      setAlert({type, message});
+      setIsAlertVisible(true);
+      setTimeout(() => {
+        setIsAlertVisible(false);
+      }, 5500);
+    },
+    [setAlert, setIsAlertVisible],
+  );
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
 
   const showDateTimePicker = () => {
@@ -60,8 +64,49 @@ const Hire = () => {
     setDate(date.toLocaleString('en-US'));
     hideDateTimePicker();
   };
-  const [message, setMessage] = useState('');
-  const handleHire = () => {};
+  const handleHire = () => {
+    if (!order.date || !order.message) {
+      return;
+    }
+    if (order.message && order.message.length < 10) {
+      showAlert('danger', 'Message must be at least 10 characters');
+      return;
+    }
+    if (!params.requested) {
+      return;
+    }
+    try {
+      setRequested(true);
+      const id = Math.floor(Math.random() * 10000);
+      // Append order to user's orders
+      firebase
+        .database()
+        .ref(`users/${firebase.auth().currentUser?.displayName}/orders/${id}`)
+        .set({
+          id: id,
+          message: order.message,
+          date: order.date,
+          accepted: false,
+          sender: true,
+          user: requestedTalented,
+        });
+
+      // Append order to requested user's orders
+      firebase.database().ref(`users/${params.requested.id}/orders/${id}`).set({
+        id: id,
+        message: order.message,
+        date: order.date,
+        accepted: false,
+        sender: false,
+        user,
+      });
+
+      showAlert('success', 'Order sent successfully');
+      navigation.navigate('Home');
+    } catch (e) {
+      showAlert('danger', 'Something went wrong');
+    }
+  };
   return (
     <Block safe marginTop={sizes.md}>
       <Block paddingHorizontal={sizes.s}>
@@ -123,7 +168,7 @@ const Hire = () => {
                   minimumDate={new Date()}
                   onConfirm={handleDatePicked}
                   onCancel={hideDateTimePicker}
-                  //onChange={(value) => handleChange(value)}
+                  onChange={(value) => handleChange({date: value})}
                 />
                 <Button
                   flex={1}
@@ -137,7 +182,7 @@ const Hire = () => {
                       color={isDark ? colors.white : colors.black}
                       size={16}
                     />
-                    {`  ${date.length <= 0 ? t('add.date') : date}`}
+                    {`  ${date.length <= 0 ? t('hire.date') : date}`}
                   </Text>
                 </Button>
                 <Input
@@ -146,15 +191,15 @@ const Hire = () => {
                   style={{height: 200}}
                   multiline
                   label={t('hire.msg')}
-                  keyboardType="numeric"
+                  keyboardType="default"
                   placeholder={t('hire.msgPlaceholder')}
-                  value={message}
-                  onChangeText={(value) => setMessage(value)}
+                  onChangeText={(value) => handleChange({message: value})}
                 />
                 <Button
                   onPress={handleHire}
                   marginVertical={sizes.s}
-                  gradient={gradients.primary}>
+                  gradient={gradients.primary}
+                  disabled={requested || !order.message || !order.date}>
                   <Text bold white transform="uppercase">
                     {t('hire.send')}
                   </Text>
@@ -164,6 +209,13 @@ const Hire = () => {
           </Block>
         </Block>
       </Block>
+      {isAlertVisible && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          isVisible={isAlertVisible}
+        />
+      )}
     </Block>
   );
 };

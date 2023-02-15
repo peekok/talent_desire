@@ -3,15 +3,16 @@ import React, {useLayoutEffect, useState, useEffect, useCallback} from 'react';
 import {useNavigation} from '@react-navigation/core';
 import {useHeaderHeight} from '@react-navigation/stack';
 
-import {useTheme, useTranslation} from '../hooks/';
+import {useData, useTheme, useTranslation} from '../hooks/';
 import {Block, Button, Image, Text} from '../components/';
 import {firebase} from '../services/firebase';
 import {ActivityIndicator, TouchableOpacity} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 
 const Order = () => {
-  const {assets, sizes} = useTheme();
+  const {assets, gradients, sizes} = useTheme();
   const {t} = useTranslation();
+  const {isDark} = useData();
   const [isLoading, setIsLoading] = useState(true);
   const [orders, setOrders] = useState([]);
   const navigation = useNavigation();
@@ -34,9 +35,35 @@ const Order = () => {
         setIsLoading(false);
       });
   }, []);
-  orders.map((order: any) => {
-    console.log(order);
-  });
+  const handleReject = (order: any) => {
+    console.log(order, 'is rejected');
+    firebase
+      .database()
+      .ref(
+        `users/${firebase.auth().currentUser?.displayName}/orders/${order.id}`,
+      )
+      .remove();
+    firebase
+      .database()
+      .ref(`users/${order.user?.id}/orders/${order.id}`)
+      .remove();
+  };
+  const handleApprove = (order: any) => {
+    console.log(order, 'is approved');
+    firebase
+      .database()
+      .ref(
+        `users/${firebase.auth().currentUser?.displayName}/orders/${order.id}`,
+      )
+      .update({accepted: true});
+    firebase
+      .database()
+      .ref(`users/${order.user?.id}/orders/${order.id}`)
+      .update({accepted: true});
+  };
+  const handleChat = (order: any) => {
+    navigation.navigate('Chat', {order: order});
+  };
   useEffect(() => {
     getOrders();
   }, [getOrders]);
@@ -57,7 +84,7 @@ const Order = () => {
               ((sizes.width - sizes.padding * 2 - sizes.sm) / 2) * 2 + sizes.sm
             }>
             <Image
-              source={{uri: order.requester?.avatar}}
+              source={{uri: order.user?.avatar}}
               style={{
                 width: sizes.xxl,
                 height: sizes.xxl,
@@ -66,14 +93,14 @@ const Order = () => {
             />
             <Block marginLeft={sizes.s}>
               <Text p semibold>
-                {order.requester?.name}
+                {order.user?.fullName}
               </Text>
               <Text p gray>
-                Price: {order.price}
+                {t('orders.price')}
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('UserProfile', {user: order.requester});
+                  navigation.navigate('UserProfile', {user: order.user});
                 }}>
                 <Block row flex={0} align="center">
                   <Text
@@ -87,53 +114,97 @@ const Order = () => {
                   <Image source={assets.arrow} color={colors.link} />
                 </Block>
               </TouchableOpacity>
-              <Text p black>
-                Order Details:
+              <Text p color={isDark ? colors.white : colors.black}>
+                {t('orders.details')}
               </Text>
               <Text p gray>
-                {order.msg}
+                {order.message}
               </Text>
-              <Button
-                row
-                flex={0}
-                radius={15}
-                style={{
-                  width: 20,
-                  flex: 0,
-                  position: 'absolute',
-                  justifyContent: 'flex-end',
-                  right: 0,
-                  marginTop: 5,
-                }}
-                primary
-                onPress={() => {
-                  console.log('hello');
-                }}>
-                <Ionicons name={'checkmark'} color={colors.white} size={28} />
-              </Button>
-              <Button
-                row
-                flex={0}
-                radius={15}
-                style={{
-                  width: 20,
-                  flex: 0,
-                  position: 'absolute',
-                  justifyContent: 'flex-end',
-                  right: 0,
-                  marginTop: 5,
-                  marginRight: 60,
-                }}
-                secondary
-                onPress={() => {
-                  console.log('not hello');
-                }}>
-                <Ionicons
-                  name={'close-outline'}
-                  color={colors.white}
-                  size={28}
-                />
-              </Button>
+              {order.sender && !order.accepted ? (
+                <Text
+                  p
+                  style={{
+                    width: 100,
+                    flex: 0,
+                    position: 'absolute',
+                    justifyContent: 'flex-end',
+                    right: 0,
+                    marginTop: 38,
+                  }}>
+                  {t('orders.pending')}
+                </Text>
+              ) : null}
+              {!order.sender && !order.accepted ? (
+                <>
+                  <Button
+                    row
+                    flex={0}
+                    radius={15}
+                    style={{
+                      width: 20,
+                      flex: 0,
+                      position: 'absolute',
+                      justifyContent: 'flex-end',
+                      right: 0,
+                      marginTop: 30,
+                    }}
+                    primary
+                    onPress={() => {
+                      handleApprove(order);
+                    }}>
+                    <Ionicons
+                      name={'checkmark'}
+                      color={colors.white}
+                      size={28}
+                    />
+                  </Button>
+                  <Button
+                    row
+                    flex={0}
+                    radius={15}
+                    style={{
+                      width: 20,
+                      flex: 0,
+                      position: 'absolute',
+                      justifyContent: 'flex-end',
+                      right: 0,
+                      marginTop: 30,
+                      marginRight: 60,
+                    }}
+                    secondary
+                    onPress={() => {
+                      handleReject(order);
+                    }}>
+                    <Ionicons
+                      name={'close-outline'}
+                      color={colors.white}
+                      size={28}
+                    />
+                  </Button>
+                </>
+              ) : null}
+              {order.accepted ? (
+                <Button
+                  row
+                  flex={0}
+                  radius={15}
+                  style={{
+                    width: 100,
+                    flex: 0,
+                    position: 'absolute',
+                    justifyContent: 'flex-end',
+                    right: 0,
+                    marginTop: 30,
+                  }}
+                  gradient={gradients.primary}
+                  onPress={() => {
+                    handleChat(order);
+                  }}>
+                  <Text h5 white>
+                    {t('orders.chat')}
+                  </Text>
+                </Button>
+              ) : null}
             </Block>
           </Block>
         ))

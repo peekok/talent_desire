@@ -190,8 +190,7 @@ const DrawerContent = (
                 }}>
                 <Ionicons size={18} name="star" color={colors.white} />
                 <Text bold white left={10}>
-                  Become Talented
-                  {/*TODO: t('screens.becomeTalented')*/}
+                  {t('screens.becomeTalented')}
                 </Text>
               </Button>
             </Block>
@@ -236,8 +235,11 @@ const DrawerContent = (
           align="center"
           marginBottom={sizes.l}
           marginTop={
-            // TODO: Edit this
-            user && user.type === 'user' ? sizes.xxl * 7.0 : sizes.xxl * 8
+            user && user.type === 'User'
+              ? sizes.xxl * 7.0
+              : user && user.type === 'Talented'
+              ? sizes.xxl * 8
+              : sizes.xxl * 10.4
           }>
           <Image
             radius={0}

@@ -39,7 +39,8 @@
     "settings": "Settings",
     "login": "Login",
     "logout": "Logout",
-    "order": "Order"
+    "order": "Order",
+    "becomeTalented": "Become Talented"
   },
   "navigation": {
     "home": "TalentDesire",
@@ -91,6 +92,12 @@
     "showProfile": "Show Profile",
     "msg": "Message",
     "msgPlaceholder": "Enter your message.."
+  },
+  "orders": {
+    "price": "Price: Decided Later",
+    "chat": "Chat",
+    "pending": "Pending...",
+    "details": "Order Details"
   },
   "settings": {
     "language": "Language",

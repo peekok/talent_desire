@@ -40,26 +40,20 @@ export default () => {
     ),
     headerRight: () => (
       <Block row flex={0} align="center" marginRight={sizes.padding}>
-        {user?.type === 'Talented' ? (
-          <TouchableOpacity onPress={() => navigation.navigate('Add')}>
-            <Image source={icons.add} radius={0} color={colors.icon} />
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={{marginRight: sizes.xs}}
-            onPress={() => navigation.navigate('Screens', {})}>
-            <Image source={icons.bell} radius={0} color={colors.icon} />
-            <Block
-              flex={0}
-              right={0}
-              width={sizes.s}
-              height={sizes.s}
-              radius={sizes.xs}
-              position="absolute"
-              gradient={gradients?.primary}
-            />
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={{marginRight: sizes.xs}}
+          onPress={() => navigation.navigate('Screens', {})}>
+          <Image source={icons.bell} radius={0} color={colors.icon} />
+          <Block
+            flex={0}
+            right={0}
+            width={sizes.s}
+            height={sizes.s}
+            radius={sizes.xs}
+            position="absolute"
+            gradient={gradients?.primary}
+          />
+        </TouchableOpacity>
       </Block>
     ),
   } as StackHeaderOptions;
@@ -103,11 +97,9 @@ export default () => {
         <Block row flex={0} align="center" marginRight={sizes.padding}>
           <TouchableOpacity
             style={{marginRight: sizes.sm}}
-            onPress={() =>
-              navigation.navigate('Screens', {
-                screen: 'Notifications',
-              })
-            }>
+            onPress={() => {
+              console.log('hi');
+            }}>
             <Image source={icons.bell} radius={0} color={colors.icon} />
             <Block
               flex={0}
