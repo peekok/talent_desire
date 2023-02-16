@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {useNavigation, useRoute} from '@react-navigation/core';
-
 import {Block, Button, Image, Text, Tag} from '../components/';
 import {useData, useTheme, useTranslation} from '../hooks/';
+import {firebase} from '../services/firebase';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -23,6 +23,10 @@ const UserProfile = () => {
   const [skills, setSkills] = useState([]);
   const getData = () => {
     setIsLoading(true);
+    if (!user.skills) {
+      setIsLoading(false);
+      return;
+    }
     let skillArray: any = [];
     let allSkills = [JSON.parse(JSON.stringify(user.skills, null, 2))];
     allSkills.map((skill: any) => {
@@ -95,25 +99,28 @@ const UserProfile = () => {
                 />
               </Text>
               <Block row marginVertical={sizes.m}>
-                <Button
-                  white
-                  outlined
-                  shadow={false}
-                  radius={sizes.m}
-                  onPress={() => {
-                    navigation.navigate('Hire', {requested: user});
-                  }}>
-                  <Block
-                    justify="center"
+                {user.type === 'Talented' &&
+                user.id.toString() !==
+                  firebase.auth().currentUser?.displayName ? (
+                  <Button
+                    white
+                    outlined
+                    shadow={false}
                     radius={sizes.m}
-                    paddingHorizontal={sizes.m}
-                    color="rgba(255,255,255,0.2)">
-                    <Text white bold transform="uppercase">
-                      {t('profile.hire')}{' '}
-                      {/* ANCHOR Add to translations file */}
-                    </Text>
-                  </Block>
-                </Button>
+                    onPress={() => {
+                      navigation.navigate('Hire', {requested: user});
+                    }}>
+                    <Block
+                      justify="center"
+                      radius={sizes.m}
+                      paddingHorizontal={sizes.m}
+                      color="rgba(255,255,255,0.2)">
+                      <Text white bold transform="uppercase">
+                        {t('profile.hire')}{' '}
+                      </Text>
+                    </Block>
+                  </Button>
+                ) : null}
                 {user.github ? (
                   <Button
                     shadow={false}
